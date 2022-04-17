@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { postService } from "../services";
-import CustomHTTPError from "../utils/error";
-import createError from "../utils/error";
 
 
 
@@ -10,12 +8,12 @@ export const postAccessControl = async (req: Request, res: Response, next: NextF
 
     const { id } = req.params
 
-    const [canView, error] = await postService.getPostAccess(Number(id), userId)
+    const [_, error] = await postService.getPostAccess(Number(id), userId)
 
-    if(canView) {
-        return next()
+    if(error) {
+        return next(error.getErrors())
     }
 
-    next(error?.getErrors())
+    next()
 
 }
