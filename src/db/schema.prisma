@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum PostStatus {
+  PUBLIC
+  PRIVATE
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String @unique
+  password String
+  notifications Notification[]
+  posts Post[]
+  comments Comment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ratings Rating[] 
+}
+
+model PostCategories {
+  postId Int
+  post Post @relation(fields: [postId], references: [id])
+  categoriesId Int
+  categories Category @relation(fields: [categoriesId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@id([postId, categoriesId])
+  
+}
+
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  posts PostCategories[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Rating {
+  id Int @id @default(autoincrement())
+  rating Int @default(0)
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  postId Int
+  todo Post @relation(fields: [postId], references: [id])
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  title String @unique
+  description String
+  status PostStatus @default(PUBLIC)
+  creatorId Int
+  creator User @relation(fields: [creatorId], references: [id])
+  comments Comment[]
+  categories PostCategories[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ratings Rating[]
+}
+
+
+model Comment {
+  id Int @id @default(autoincrement())
+  comment String
+  userId Int
+  comments Comment[] @relation(name: "ParentComment")
+  parentId Int
+  parent Comment @relation(name: "ParentComment", fields: [parentId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+  postId Int
+  post Post @relation(fields: [postId], references: [id])
+}
+
+model Notification {
+  id Int @id @default(autoincrement())
+  userId Int
+  notification String
+  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
