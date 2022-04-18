@@ -24,7 +24,7 @@ export const addPost = async (req: Request, res: Response, next: NextFunction) =
     const [ _, error ] = await postService.addPost({title, description, status, creatorId})
 
     if(error) {
-        next(error.getErrors())
+        return next(error.getErrors())
     }
 
     response.json({

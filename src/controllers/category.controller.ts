@@ -37,7 +37,7 @@ export const addCategory = async (req: Request, res: Response, next: NextFunctio
     const [_, error] = await categoryService.addCategory({name})
 
     if(error) {
-        next(error)
+        return next(error)
     }
 
     res.json({
