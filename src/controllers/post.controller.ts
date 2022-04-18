@@ -49,7 +49,7 @@ export const getPost = async(req: Request, res: Response, next: NextFunction) =>
     const [post, error] = await postService.getPost(userId, Number(id))
 
     if(error) {
-        next(error.getErrors())
+        return next(error.getErrors())
     }
 
     res.json({
@@ -65,7 +65,7 @@ export const getPostComments = async(req: Request, res: Response, next: NextFunc
     const [comments, error] = await postService.getPostComments(Number(id))
 
     if(error) {
-        next(error.getErrors())
+        return next(error.getErrors())
     }
 
     res.json({
@@ -80,7 +80,7 @@ export const getPostComment = async (req: Request, res: Response, next: NextFunc
     const [comment, error] = await postService.getPostComment(Number(id), Number(commentId))
 
     if(error) {
-        next(error.getErrors())
+        return next(error.getErrors())
     }
 
     res.json({
@@ -95,7 +95,7 @@ export const getPostRating = async (req: Request, res: Response, next: NextFunct
     const [rating, error] = await postService.getPostRating(Number(id))
 
     if(error) {
-        next(error.getErrors())
+        return next(error.getErrors())
     }
 
     res.json({

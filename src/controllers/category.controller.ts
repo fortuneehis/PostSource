@@ -6,7 +6,7 @@ export const getCategories = async (req: Request, res: Response, next: NextFunct
     const [categories, error] = await categoryService.getCategories()
 
     if(error) {
-        next(error)
+        return next(error)
     }
 
     res.json({
@@ -22,7 +22,7 @@ export const getCategoryPost = async (req: Request, res: Response, next: NextFun
     const [posts, error] = await categoryService.getCategoryPosts(Number(id))
 
     if(error) {
-        next(error)
+        return next(error)
     }
 
     res.json({
