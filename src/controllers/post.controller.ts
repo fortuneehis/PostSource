@@ -2,7 +2,9 @@
 import { Post } from "@prisma/client"
 import { NextFunction, Request, response, Response } from "express"
 import { postService } from "../services"
-import createError from "../utils/error"
+
+
+type POST_STATUS = "PUBLIC"|"PRIVATE"
 
 export const getAllPosts = async(req: Request, res: Response, next: NextFunction) => {
     const [posts, error] = await postService.getAllPosts()
@@ -18,10 +20,17 @@ export const getAllPosts = async(req: Request, res: Response, next: NextFunction
 }
 
 export const addPost = async (req: Request, res: Response, next: NextFunction) => {
-    const { id: creatorId } = req.user
-    const { title, description, status }: Pick<Post, "title"|"description"|"status"> = req.body
 
-    const [ _, error ] = await postService.addPost({title, description, status, creatorId})
+
+    const { id: creatorId } = req.user
+
+    const { title, description, status, categories } : {title: string, description: string, status: POST_STATUS, categories: string}= req.body
+    
+    const categoriesArray = categories.split(',')
+        .map(category=> category.trim())
+        .filter(category=> category.length > 0)
+
+    const [ _, error ] = await postService.addPost({title, description, status, creatorId, categoriesArray})
 
     if(error) {
         return next(error.getErrors())

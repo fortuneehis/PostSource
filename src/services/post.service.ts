@@ -20,7 +20,7 @@ export const getAllPosts = async(): Promise<[Post[]|null, CustomHTTPError|null]>
     }
 }
 
-export const addPost = async({ title, description, status, creatorId }: Pick<Post, "title"|"description"|"status"|"creatorId">): Promise<[boolean, CustomHTTPError|null]> => {
+export const addPost = async({ title, description, status, creatorId, categoriesArray }: Pick<Post, "title"|"description"|"status"|"creatorId">&{categoriesArray: string[]}): Promise<[boolean, CustomHTTPError|null]> => {
         try {
             await prismaClient.post.create({
                 data: { 

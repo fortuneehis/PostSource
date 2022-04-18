@@ -13,7 +13,8 @@ postRouter.get('/',
 postController.getAllPosts)
 
 postRouter.post('/', 
-postValidationSchema.addPostSchema)
+postValidationSchema.addPostSchema,
+postController.addPost)
 
 
 postRouter.get('/:id', 

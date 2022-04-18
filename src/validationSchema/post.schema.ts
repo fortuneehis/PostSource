@@ -10,7 +10,7 @@ export const getPostSchema = requestValidator(object({
 
 export const addPostSchema = requestValidator(object({
     body: object({
-        
+        categories: string().matches(/(\w+,{0,})/).required()
     })
 }))
 

@@ -3,10 +3,9 @@
 
 
 
-GET http://localhost:5000/posts/2 HTTP/1.1
+POST http://localhost:5000/posts/ HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImFiYyIsInBhc3N3b3JkIjoiJDJhJDEwJGZsWXVoUjRnRS80YmNzNHBxRC82Ui52ZFZSRFNpWllEQWRNVUdRTndHLnFadnRubVBMQ0hlIiwiY3JlYXRlZEF0IjoiMjAyMi0wNC0xNFQxNjozNDo1OC4yNjhaIiwidXBkYXRlZEF0IjoiMjAyMi0wNC0xNFQxNjozNDo1OC4yNjhaIiwiaWF0IjoxNjQ5OTcwNTk3fQ.IN8thFZPxNLIcBdjje4_Wb6oSYiOyyfq4NB-fMEHcvA
-
 Content-Type: application/x-www-form-urlencoded
 
-name=abc
-&password=123dsafe
+
+categories=abcasdf xfxf
