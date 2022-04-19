@@ -22,6 +22,19 @@ export const getAllPosts = async(): Promise<[Post[]|null, CustomHTTPError|null]>
 
 export const addPost = async({ title, description, status, creatorId, categoriesArray }: Pick<Post, "title"|"description"|"status"|"creatorId">&{categoriesArray: string[]}): Promise<[boolean, CustomHTTPError|null]> => {
         try {
+
+            const categories = await categoriesArray.map(async (category)=> {
+                const categoryArray = await prismaClient.category.findFirst({
+                    where: {
+                        name: category
+                    }
+                })
+
+                if(categoriesArray) {
+                    return categoryArray
+                }
+            })
+
             await prismaClient.post.create({
                 data: { 
                     title,
@@ -31,17 +44,11 @@ export const addPost = async({ title, description, status, creatorId, categories
                         connect: {
                             id: creatorId
                         }
-                    },
+                    }, 
                     categories: {
-                       create: [
-                           {
-                               categories: {
-                                   connect: {
-                                       
-                                   }
-                               }
-                           }
-                       ]
+                       connect: {
+                           
+                       }
                     }
                 }
             })
