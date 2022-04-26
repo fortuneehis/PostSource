@@ -18,12 +18,15 @@ export const getCategories = async () => {
 
 export const getCategoryPosts = async (categoryId: number) => {
     try {
-        const posts = await prismaClient.category.findFirst({
+        const posts = await prismaClient.post.findMany({
             where: {
-                id: categoryId
-            },
-            include: {
-                posts: true
+                categories: {
+                    some: {
+                        categories: {
+                            id: categoryId
+                        }
+                    }
+                }
             }
         })
 
@@ -37,8 +40,7 @@ export const addCategory = async({name}: Pick<Category, "name">) => {
     try {
         await prismaClient.category.create({
             data: {
-                name,
-                slug: name
+                name
             }
         })
         return [true, null]

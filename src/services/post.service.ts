@@ -23,8 +23,18 @@ export const getAllPosts = async(): Promise<[Post[]|null, CustomHTTPError|null]>
 export const addPost = async({ title, description, status, creatorId, categories }: Pick<Post, "title"|"description"|"status"|"creatorId">&{categories: string}): Promise<[boolean, CustomHTTPError|null]> => {
         
     const categoriesToArray = categories.split(',')
-    .map(category=> category.trim().toLowerCase())
     .filter(category=> category.length > 0)
+    .map(category=> {
+        return {
+            categories: {
+                create: {
+                    name: category.trim().toLowerCase(),
+                    slug: category.trim().toLowerCase()
+                }
+            }
+        }
+    })
+    
 
         try {
 
@@ -32,12 +42,16 @@ export const addPost = async({ title, description, status, creatorId, categories
                 data: {
                     title,
                     slug: title,
+                    description,
                     creator: {
                         connect: {
                             id: creatorId
                         }
                     },
                     categories: {
+                        create: [
+                            ...categoriesToArray
+                        ]
                     }
                 }
             })

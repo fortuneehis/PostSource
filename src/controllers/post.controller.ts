@@ -1,5 +1,3 @@
-
-import { Post } from "@prisma/client"
 import { NextFunction, Request, response, Response } from "express"
 import { postService } from "../services"
 
@@ -26,19 +24,16 @@ export const addPost = async (req: Request, res: Response, next: NextFunction) =
 
     const { title, description, status, categories } : {title: string, description: string, status: POST_STATUS, categories: string}= req.body
     
-    const categoriesArray = categories.split(',')
-        .map(category=> category.trim())
-        .filter(category=> category.length > 0)
 
-    const [ _, error ] = await postService.addPost({title, description, status, creatorId, categoriesArray})
+    const [ _, error ] = await postService.addPost({title, description, status, creatorId, categories})
 
     if(error) {
         return next(error.getErrors())
     }
 
-    response.json({
+    res.json({
         success: true,
-        message: "User registered successfully"
+        message: "You made a post 🎉"
     })
 }
 
@@ -87,7 +82,7 @@ export const addPostComment = async (req: Request, res: Response, next: NextFunc
 
     res.json({
         success: true,
-        message: "You commented on a post"
+        message: "You commented on a post 🎉"
     })
 }
 

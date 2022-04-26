@@ -10,7 +10,7 @@ const requestValidator = (schema: yup.AnyObjectSchema) => async (req: Request, r
         await schema.validate(req)
         next()
     } catch(err: any) {
-       next(new CustomHTTPError(err.name, 400, "", err.errors))
+       next(new CustomHTTPError(err.name, "", 400, err.errors))
     }
 }
 

@@ -14,10 +14,10 @@ class CustomHTTPError extends Error {
     }
 
     getErrors() {
-            return {
-                status: this.status || 500,
-                message: this.name === "ValidationError" ? this.errors : this.message
-            }
+        return {
+            status: this.status || 500,
+            message: this.name === "ValidationError" ? this.errors : this.message
+        }
     }
 }
 
