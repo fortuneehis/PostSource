@@ -59,6 +59,7 @@ model Rating {
 model Post {
   id Int @id @default(autoincrement())
   title String @unique
+  slug String @unique
   description String
   status PostStatus @default(PUBLIC)
   creatorId Int
@@ -77,10 +78,10 @@ model Comment {
   userId Int
   comments Comment[] @relation(name: "ParentComment")
   parentId Int
-  parent Comment @relation(name: "ParentComment", fields: [parentId], references: [id])
+  parent Comment? @relation(name: "ParentComment", fields: [parentId], references: [id])
   user User @relation(fields: [userId], references: [id])
   postId Int
-  post Post @relation(fields: [postId], references: [id])
+  post Post @relation(fields: [postId], references: [id]) 
 }
 
 model Notification {

@@ -18,7 +18,7 @@ export const createUser = async ({name, password}: Pick<User, "name"|"password">
         })
 
         if(user) {
-            throw new CustomHTTPError("", 400, "name already exists!")
+            throw new CustomHTTPError("", "user already exists!", 400)
         }
 
         const hashedPassword = await hashPassword(password)
@@ -32,7 +32,7 @@ export const createUser = async ({name, password}: Pick<User, "name"|"password">
         return [true, null]
 
     } catch(err: any) {
-        return [null, err.message]
+        return [null, err]
     }
 }
 
@@ -46,8 +46,8 @@ export const authenticateUser = async ({name, password}: Pick<User, "name"|"pass
     
         })
         
-        if(!(user && comparePassword(password, user.password))) {
-            throw new CustomHTTPError("", 402, "Invalid Credentials!")
+        if(!user || !await comparePassword(password, user.password)) {
+            throw new CustomHTTPError("", "Invalid Credentials!", 402)
         }
         const accessToken = jwt.sign(user, process.env.JWT_SECRET as string)
 
@@ -62,6 +62,6 @@ export const authenticateUser = async ({name, password}: Pick<User, "name"|"pass
         return [userData, null]
 
     } catch(err: any) {
-        return [null, err.message]
+        return [null, err]
     }
 }

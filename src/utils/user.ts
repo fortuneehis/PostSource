@@ -8,5 +8,5 @@ export const hashPassword = async (password: string, rounds?: number) => {
 
 
 export const comparePassword = async (password: string, hashedPassword: string) => {
-    await bcrypt.compare(password, hashedPassword)
-}   
+   return await bcrypt.compare(password, hashedPassword)
+}    

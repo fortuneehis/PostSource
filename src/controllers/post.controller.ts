@@ -74,6 +74,23 @@ export const getPostComments = async(req: Request, res: Response, next: NextFunc
     })
 }
 
+export const addPostComment = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params
+    const { comment } = req.body
+    const { id: userId } = req.user
+
+    const [_, error] = await postService.addPostComment(Number(id), userId, comment)
+
+    if(error) {
+        return next(error.getErrors())
+    }
+
+    res.json({
+        success: true,
+        message: "You commented on a post"
+    })
+}
+
 export const getPostComment = async (req: Request, res: Response, next: NextFunction) => {
     const { id, commentId } = req.params
 

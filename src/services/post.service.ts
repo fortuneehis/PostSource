@@ -1,4 +1,4 @@
-import { Comment, Post, Rating, User } from "@prisma/client"
+import { Comment, Post, Prisma, Rating, User } from "@prisma/client"
 import { connect } from "http2"
 import CustomHTTPError from "../utils/error"
 import prismaClient from "../utils/prisma"
@@ -16,45 +16,34 @@ export const getAllPosts = async(): Promise<[Post[]|null, CustomHTTPError|null]>
 
     } catch(err: any) {
 
-        return [null, new CustomHTTPError(err.name, 500, err.message)]
+        return [null, new CustomHTTPError(err.name, err.message)]
     }
 }
 
-export const addPost = async({ title, description, status, creatorId, categoriesArray }: Pick<Post, "title"|"description"|"status"|"creatorId">&{categoriesArray: string[]}): Promise<[boolean, CustomHTTPError|null]> => {
+export const addPost = async({ title, description, status, creatorId, categories }: Pick<Post, "title"|"description"|"status"|"creatorId">&{categories: string}): Promise<[boolean, CustomHTTPError|null]> => {
+        
+    const categoriesToArray = categories.split(',')
+    .map(category=> category.trim().toLowerCase())
+    .filter(category=> category.length > 0)
+
         try {
 
-            const categories = await categoriesArray.map(async (category)=> {
-                const categoryArray = await prismaClient.category.findFirst({
-                    where: {
-                        name: category
-                    }
-                })
-
-                if(categoriesArray) {
-                    return categoryArray
-                }
-            })
-
             await prismaClient.post.create({
-                data: { 
+                data: {
                     title,
-                    description,
-                    status,
+                    slug: title,
                     creator: {
                         connect: {
                             id: creatorId
                         }
-                    }, 
+                    },
                     categories: {
-                       connect: {
-                           
-                       }
                     }
                 }
             })
             return [true, null]
         } catch(err: any) {
-            return [false, new CustomHTTPError("", 500, err.message)]
+            return [false, new CustomHTTPError("", err.message)]
         }
 }
 
@@ -74,7 +63,7 @@ export const getPost = async (userId:number, postId: number): Promise<[Post|null
 
         return [post, null]
     } catch(err: any) {
-        return [null, new CustomHTTPError(err.name, 500, err.message)]
+        return [null, new CustomHTTPError(err.name, err.message)]
     }
 }
 
@@ -103,7 +92,31 @@ export const getPostComments = async (postId: number): Promise<[Comment[]|null, 
         })
         return [comments, null]
     } catch(err: any) {
-        return [null, new CustomHTTPError(err.name, 500, err.message)]
+        return [null, new CustomHTTPError(err.name, err.message)]
+    }
+}
+
+export const addPostComment = async(postId: number, userId: number, comment: string): Promise<[boolean|null, CustomHTTPError|null]> => {
+    try {
+
+        await prismaClient.comment.create({
+            data: {
+                comment,
+                user: {
+                    connect: {
+                        id: userId
+                    }
+                }, 
+                post: {
+                    connect: {
+                        id: postId
+                    }
+                }
+            }
+        })
+        return [true, null]
+    } catch(err: any) {
+        return [null, new CustomHTTPError(err.name, err.message)]
     }
 }
 
@@ -131,7 +144,7 @@ export const getPostComment = async (postId: number, commentId: number): Promise
         return [comment, null]
 
     } catch(err: any) {
-        return [null, new CustomHTTPError(err.name, 500, err.message)]
+        return [null, new CustomHTTPError(err.name, err.message)]
     }
 }
 
@@ -148,11 +161,11 @@ export const getPostAccess = async (postId: number, userId: number): Promise<[bo
             }
         })
         if(!post) {
-            throw new CustomHTTPError("",404, "This resource does not exist!")
+            throw new CustomHTTPError("", "This resource does not exist!", 404)
         }
         if(post && post.status === "PRIVATE" && post.creator.id !== userId){
             //status - 403
-            throw new CustomHTTPError("Access denied!",403,"You don't have access to this resource!")
+            throw new CustomHTTPError("Access denied!","You don't have access to this resource!",403)
         }
     
         return [true, null]
@@ -174,6 +187,6 @@ export const getPostRating = async (postId: number): Promise<[(Rating&{user: Use
         })
         return [rating, null]
     } catch(err: any) {
-        return [null, new CustomHTTPError(err.name, 500, err.message)]
+        return [null, new CustomHTTPError(err.name, err.message)]
     }
 }

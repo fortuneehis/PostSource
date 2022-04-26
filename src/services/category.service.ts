@@ -4,7 +4,11 @@ import prismaClient from "../utils/prisma"
 
 export const getCategories = async () => {
     try {
-        const categories = await prismaClient.category.findMany()
+        const categories = await prismaClient.category.findMany({
+            distinct: [
+                "name"
+            ]
+        })
 
         return [categories, null]
     } catch(err: any) {
@@ -33,7 +37,8 @@ export const addCategory = async({name}: Pick<Category, "name">) => {
     try {
         await prismaClient.category.create({
             data: {
-                name
+                name,
+                slug: name
             }
         })
         return [true, null]

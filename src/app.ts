@@ -23,7 +23,7 @@ app.use("/posts", postRouter)
 app.use("/categories", categoryRouter)
 
 app.use((err: CustomHTTPError, req: Request, res: Response, next: NextFunction)=>{
-    res.status(err.status).json({
+    res.status(err.status ?? 500).json({
         success: false,
         err
     })
