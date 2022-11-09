@@ -21,17 +21,17 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@prisma/client@^3.12.0":
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-3.12.0.tgz#a0eb49ffea5c128dd11dffb896d7139a60073d12"
-  integrity sha512-4NEQjUcWja/NVBvfuDFscWSk1/rXg3+wj+TSkqXCb1tKlx/bsUE00rxsvOvGg7VZ6lw1JFpGkwjwmsOIc4zvQw==
+"@prisma/client@^4.6.0":
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.6.0.tgz#22e1bd5d6dac91453c31f75fc732889ec810c47c"
+  integrity sha512-D9LaQinDxOHinRpcJTw2tjMtjhc9HTP+aF1IRd2oLldp/8TiwIfxK8x17OhBBiX4y1PzbJXXET7kS+5wB3es/w==
   dependencies:
-    "@prisma/engines-version" "3.12.0-37.22b822189f46ef0dc5c5b503368d1bee01213980"
+    "@prisma/engines-version" "4.6.0-53.2e719efb80b56a3f32d18a62489de95bb9c130e3"
 
-"@prisma/engines-version@3.12.0-37.22b822189f46ef0dc5c5b503368d1bee01213980":
-  version "3.12.0-37.22b822189f46ef0dc5c5b503368d1bee01213980"
-  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-3.12.0-37.22b822189f46ef0dc5c5b503368d1bee01213980.tgz#829ca3d9d0d92555f44644606d4edfd45b2f5886"
-  integrity sha512-o+jo8d7ZEiVpcpNWUDh3fj2uPQpBxl79XE9ih9nkogJbhw6P33274SHnqheedZ7PyvPIK/mvU8MLNYgetgXPYw==
+"@prisma/engines-version@4.6.0-53.2e719efb80b56a3f32d18a62489de95bb9c130e3":
+  version "4.6.0-53.2e719efb80b56a3f32d18a62489de95bb9c130e3"
+  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-4.6.0-53.2e719efb80b56a3f32d18a62489de95bb9c130e3.tgz#7f1ee48b76b3c68d81eb11c50fb33861ca60b2e1"
+  integrity sha512-0CTnfEuUbLlO6n1fM89ERDbSwI4LoyZn+1OKVSwG+aVqohj34+mXRfwOWIM0ONtYtLGGBpddvQAnAZkg+cgS6g==
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
